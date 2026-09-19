@@ -1,0 +1,19 @@
+{
+  "version": "1.0.0",
+  "description": "My webpack project",
+  "name": "webpack-project",
+  "type": "module",
+  "engines": {
+    "node": ">=22.6.0"
+  },
+  "scripts": {
+    "start": "webpack serve",
+    "build": "webpack --mode=production --config-node-env=production",
+    "build:dev": "webpack --mode=development",
+    
+      "serve": "webpack serve",
+    
+    "watch": "webpack --watch",
+    "check:types": "tsc --noEmit"
+  }
+}
