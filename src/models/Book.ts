@@ -1,4 +1,4 @@
-class Book implements IBook{
+export class Book implements IBook{
     private name: string;
     private author: string;
     private year: number;

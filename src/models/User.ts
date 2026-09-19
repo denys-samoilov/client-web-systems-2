@@ -1,4 +1,4 @@
-class User implements IUser{
+export class User implements IUser{
     private id: number;
     private name: string;
     private email: string;
