@@ -1,4 +1,8 @@
+import { Validator } from '../../utils/validators.ts';
+
 export class UserForm {
+    private validator = new Validator();
+
     public render(): string {
         return `
             <div class="container mt-5">
@@ -10,14 +14,17 @@ export class UserForm {
                                 
                                 <h2 class="card-title fw-bold text-dark mb-4">Додати користувача</h2>
                                 
-                                <form id="add-user-form">
+                                <form id="add-user-form" novalidate>
                                     
                                     <div class="mb-3">
-                                        <input type="text" class="form-control py-2 text-muted" id="user-name" placeholder="Ім'я">
+                                        <input type="text" class="form-control py-2 text-muted" id="user-name" placeholder="Ім'я" required>
+                                        <div class="invalid-feedback">Це поле є обов'язковим.</div>
+
                                     </div>
                                     
                                     <div class="mb-3">
-                                        <input type="text" class="form-control py-2 text-muted" id="user-email" placeholder="Email">
+                                        <input type="email" class="form-control py-2 text-muted" id="user-email" placeholder="Email" required>
+                                        <div class="invalid-feedback">Введіть коректну адресу електронної пошти.</div>
                                     </div>
                                     
                                     <button type="submit" class="btn btn-success px-4 py-2">
@@ -33,5 +40,27 @@ export class UserForm {
                 </div>
             </div>    
         `;
+    }
+
+    public validateForm(): void {
+        const form = document.getElementById('add-user-form');
+        const nameInput = document.getElementById('user-name') as HTMLInputElement | null;
+        const emailInput = document.getElementById('user-email') as HTMLInputElement | null;
+
+        if (!form || !nameInput || !emailInput) return;
+
+        form.addEventListener('submit', (event) => {
+            event.preventDefault();
+
+            const isNameValid = this.validator.isValidName(nameInput.value);
+            const isEmailValid = this.validator.isValidEmail(emailInput.value);
+
+            nameInput.classList.toggle('is-invalid', !isNameValid);
+            emailInput.classList.toggle('is-invalid', !isEmailValid);
+
+            if (isNameValid && isEmailValid) {
+                form.classList.add('was-validated');
+            }
+        });
     }
 }
