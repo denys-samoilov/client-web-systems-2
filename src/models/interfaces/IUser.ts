@@ -1,0 +1,5 @@
+interface IUser{
+    getId(): number;
+    getName(): string;
+    getEmail(): string;
+}
