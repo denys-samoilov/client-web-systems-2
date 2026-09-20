@@ -1,3 +1,6 @@
+import type { Book } from "../../models/Book";
+import type { User } from "../../models/User";
+
 export class Modal{
     public renderBorrowModal(): string {
         return `

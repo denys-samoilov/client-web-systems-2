@@ -3,7 +3,7 @@ import { UserForm } from './components/UserForm.ts';
 import { BookForm } from './components/BookForm.ts';
 import { BookList } from './components/BookList.ts';
 import { UserList } from './components/UserList.ts'; 
-import type { Book } from '../models/Book.ts';
+import { Book } from "../models/Book.js";
 import type { User } from '../models/User.ts';
 import { Modal } from './components/Modal.ts';
 
@@ -14,7 +14,7 @@ export class PageRenderer{
     private bookFormContainer = new BookForm();
     private bookListContainer = new BookList();
     private userListContainer = new UserList();
-    private modalContaine = new Modal();
+    private modalContainer = new Modal();
 
     public renderPage(books: Book[], users: User[]): string{
         return this.headerContainer.render() + 
@@ -22,7 +22,6 @@ export class PageRenderer{
                this.bookFormContainer.render() + 
                this.bookListContainer.render(books) + 
                this.userListContainer.render(users) +
-               this.modalContaine.renderBorrowModal();
-
+               this.modalContainer.renderBorrowModal();
     }
 }

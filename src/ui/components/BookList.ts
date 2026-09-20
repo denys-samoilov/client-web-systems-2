@@ -12,7 +12,7 @@ export class BookList {
                         <strong>${book.getName()}</strong> by ${book.getAuthor()} (${book.getYear()})
                     </div>
                     
-                    <button class="btn ${isBorrowed ? 'btn-warning' : 'btn-primary'} px-3 py-1 btn-sm fw-medium book-action-btn" data-name="${book.getName()}">
+                    <button class="btn ${isBorrowed ? 'btn-warning' : 'btn-primary'} px-3 py-1 btn-sm fw-medium book-action-btn" data-id="${book.getId()}">
                         ${isBorrowed ? 'Повернути' : 'Позичити'}
                     </button>
                 </div>

@@ -8,8 +8,8 @@ export class BookService {
         this.library = library;
     }
 
-    public borrowBook(name: string): boolean {
-        const book = this.library.getByName(name);
+    public borrowBook(id: number): boolean {
+        const book = this.library.getById(id);
         if (book && book.getStatus() !== 'borrowed') {
             book.setStatus('borrowed');
             return true;
@@ -17,10 +17,11 @@ export class BookService {
         return false;
     }
 
-    public returnBook(name: string): boolean {
-        const book = this.library.getByName(name);
+    public returnBook(id: number): boolean {
+        const book = this.library.getById(id);
         if (book && book.getStatus() === 'borrowed') {
             book.setStatus('available');
+            book.setUserId(-1);
             return true;
         }
         return false;

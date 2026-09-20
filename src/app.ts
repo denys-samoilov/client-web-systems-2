@@ -1,6 +1,7 @@
 // точка входу, збирає все разом
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap/dist/js/bootstrap.bundle.min.js';
+import { Modal as BModal } from 'bootstrap'; 
 
 import { PageRenderer } from './ui/render.ts';
 import { BookForm } from './ui/components/BookForm.ts';
@@ -8,7 +9,9 @@ import { UserForm } from './ui/components/UserForm.ts';
 import { Library } from './services/Library.ts';
 import { Book } from './models/Book.ts';
 import { User } from './models/User.ts';
-import { IdGenerator } from './utils/idGenerator.ts'
+import { IdGenerator } from './utils/idGenerator.ts';
+import { BookService } from './services/BookService.ts';
+import { Validator } from './utils/validators.ts';
 
 class App {
     private renderer = new PageRenderer();
@@ -18,45 +21,152 @@ class App {
 
     private bookLibrary = new Library<Book>('library_books');
     private userLibrary = new Library<User>('library_users');
+    
+    private borrowBootstrapModal: BModal | null = null; 
 
     constructor() {
+        this.bookHandler();
+        
         this.updateUI();
     }
 
-    
     private updateUI(): void {
         const rootContainer = document.getElementById('app');
 
         if (rootContainer) {
             rootContainer.innerHTML = this.renderer.renderPage(this.bookLibrary.getAll(), this.userLibrary.getAll());
+            
+            const modalElement = document.getElementById('borrowModal');
+            if (modalElement) {
+                this.borrowBootstrapModal = new BModal(modalElement);
+            }
+
             this.validateForms();
         }
     }
 
-    validateForms(): void{
+    private validateForms(): void {
         this.bookForm.validateForm((name, author, year) => {
-                const newBook = new Book(this.idGenerator.generateBookId(), name, author, year);
-                
-                this.bookLibrary.add(newBook);
-                
-                console.log(`Успішно створено об'єкт книги:`, newBook);
-                
-                this.updateUI(); 
-            });
+            const newBook = new Book(this.idGenerator.generateBookId(), name, author, year);
+            
+            this.bookLibrary.add(newBook);
+            console.log(`Успішно створено об'єкт книги:`, newBook);
+            
+            this.updateUI(); 
+        });
 
-            this.userForm.validateForm((name, email) => {
-                const newUser = new User(this.idGenerator.generateUserId(), name, email);
+        this.userForm.validateForm((name, email) => {
+            const newUser = new User(this.idGenerator.generateUserId(), name, email);
 
-                this.userLibrary.add(newUser);
+            this.userLibrary.add(newUser);
+            console.log(`Успішно створено об'єкт користувача:`, newUser);
+            
+            this.updateUI(); 
+        });
+    }
 
-                console.log(`Успішно створено об'єкт користувача:`, newUser);
-                
-                this.updateUI(); 
-            })
+    
+    private bookHandler(): void {
+        let activeBookId: number = 0;
+        const bookService = new BookService(this.bookLibrary);
+
+        document.body.addEventListener('click', (e: Event) => {
+            const target = e.target as HTMLElement;
+
+            if (target.classList.contains('book-action-btn')) {
+                const idString = target.getAttribute('data-id');
+                if (!idString) return;
+
+                const bookId = parseInt(idString, 10);
+
+                const book = this.bookLibrary.getById(bookId);
+
+                if (!book) return;
+
+                if (book.getStatus() === 'available') {
+                    activeBookId = bookId;
+                    
+                    const modalInput = document.getElementById('modal-user-id') as HTMLInputElement | null;
+                    if (modalInput) {
+                        modalInput.classList.remove('is-invalid');
+                        modalInput.value = '';
+                    }
+                    
+                    this.borrowBootstrapModal.show();
+                } 
+                else {
+                    const user = this.userLibrary.getById(book.getUser());
+                    const isReturned = bookService.returnBook(bookId);
+                    const userId = user?.getId();
+                    if (isReturned && user && userId !== undefined) {
+                        user.removeBorrowedBook(bookId);
+
+                        console.log(user);
+
+                        this.bookLibrary.remove(book.getId());
+                        this.bookLibrary.add(book);
+
+                        this.userLibrary.remove(userId);
+                        this.userLibrary.add(user);
+                    }
+                    this.updateUI(); 
+                }
+            }
+
+            if (target.id === 'modal-submit-btn') {
+                const modalInput = document.getElementById('modal-user-id') as HTMLInputElement | null;
+                if (!modalInput || !activeBookId) return;
+
+                const idString = modalInput.value.trim();
+
+                const validId = Validator.isValidId(idString);
+                modalInput.classList.toggle('is-invalid', !validId);
+
+                if (validId) {
+                    const userId = parseInt(idString, 10);
+                    const userExists = this.userLibrary.getAll().some(user => user.getId() === userId);
+
+                    if (!userExists) {
+                        const feedback = document.getElementById('modal-id-feedback');
+                        if (feedback) feedback.textContent = "Користувача з таким ID не знайдено в базі!";
+                        modalInput.classList.add('is-invalid');
+                        return;
+                    }
+
+                    const user = this.userLibrary.getById(userId);
+                    
+                    const userHasEnoughSpace = user?.hasStorageToBorrowBook();
+
+                    if (userHasEnoughSpace) {
+                        const isBorrowed = bookService.borrowBook(activeBookId);
+                        
+                        if (isBorrowed) {
+                            const book = this.bookLibrary.getById(activeBookId);
+                            book?.setUserId(userId);
+                            if (book) {
+                                user?.setBorrowedBook(book);
+                                this.bookLibrary.remove(book.getId());
+                                this.bookLibrary.add(book); 
+                                
+                                this.userLibrary.remove(user!.getId());
+                                this.userLibrary.add(user!);
+                            }
+                            console.log(`Книгу "${activeBookId}" успішно видано користувачу з ID: ${userId}`);
+                        }
+                    } else {
+                        const feedback = document.getElementById('modal-id-feedback');
+                        if (feedback) feedback.textContent = "Користувач вже має 3 книги у себе!";
+                        modalInput.classList.add('is-invalid');
+                        return;
+                    }
+
+                    this.borrowBootstrapModal.hide(); 
+                    this.updateUI(); 
+                }
+            }
+        });
     }
 }
-
- 
 
 document.addEventListener('DOMContentLoaded', () => {
     new App();

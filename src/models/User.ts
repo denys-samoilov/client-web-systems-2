@@ -4,9 +4,9 @@ export class User implements IUser{
     private id: number;
     private name: string;
     private email: string;
-    private borrowedBooks: Book[];
+    private borrowedBooks: number[];
 
-    constructor(generatedId: number, name: string, email: string, borrowedBooks: Book[] = [])
+    constructor(generatedId: number, name: string, email: string, borrowedBooks: number[] = [])
     {
         this.id = generatedId;
         this.name = name;
@@ -26,7 +26,21 @@ export class User implements IUser{
         return this.email;
     }
 
-    getBorrowedBooks(): Book[] {
+    getBorrowedBooks(): number[] {
         return this.borrowedBooks;
     }
+
+    hasStorageToBorrowBook(): boolean {
+        return this.borrowedBooks.length <3;
+    }
+
+    setBorrowedBook(book: Book): void {
+        this.borrowedBooks.push(book.getId());
+    }
+
+    removeBorrowedBook(bookId: number): void {
+        this.borrowedBooks = this.borrowedBooks.filter(
+            (borrowedBookId) => borrowedBookId !== bookId);
+    }
+
 }

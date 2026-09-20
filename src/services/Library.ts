@@ -4,7 +4,7 @@ import { Book } from "../models/Book.ts";
 import { User } from "../models/User.ts";
 
 interface Item{
-    getName(): string;
+    getId(): number;
 }
 
 export class Library<T extends Item> {
@@ -26,13 +26,13 @@ export class Library<T extends Item> {
         return [...this.collection];
     }
 
-    public remove(name: string): void {
-        this.collection = this.collection.filter(item => item.getName() !== name);
+    public remove(id: number): void {
+        this.collection = this.collection.filter(item => item.getId() !== id);
         this.saveLocalData();
     }
 
-    public getByName(name: string): T | undefined{
-        return this.collection.find(item => item.getName() === name);
+    public getById(id: number): T | undefined{
+        return this.collection.find(item => item.getId() === id);
     }
 
     private loadLocalData(): void {
@@ -41,7 +41,7 @@ export class Library<T extends Item> {
 
         for(let data of rawData){
             if(this.storageKey == "library_books"){
-                const restoredBook = new Book(data.name, data.author, data.year, data.status);
+                const restoredBook = new Book(data.id, data.name, data.author, data.year, data.status, data.userId);
                 this.collection.push(restoredBook as unknown as T);
             }
             else if(this.storageKey == "library_users"){
