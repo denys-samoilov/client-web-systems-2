@@ -46,8 +46,8 @@ export class BookForm {
         `;
     }
 
-    public validateForm(): void {
-        const form = document.getElementById('add-book-form');
+    public validateForm(onSuccess: (name: string, author: string, year: number) => void): void {
+        const form = document.getElementById('add-book-form') as HTMLFormElement;
         const nameInput = document.getElementById('book-name') as HTMLInputElement | null;
         const authorInput = document.getElementById('book-author') as HTMLInputElement | null;
         const yearInput = document.getElementById('book-year') as HTMLInputElement | null;
@@ -66,7 +66,15 @@ export class BookForm {
             yearInput.classList.toggle('is-invalid', !isYearValid);
 
             if (isNameValid && isAuthorValid && isYearValid) {
-                form.classList.add('was-validated');
+                onSuccess(nameInput.value, authorInput.value, parseInt(yearInput.value, 10));
+
+                nameInput.classList.remove('is-invalid');
+                authorInput.classList.remove('is-invalid');
+                yearInput.classList.remove('is-invalid');
+
+                nameInput.value = "";
+                authorInput.value = "";
+                yearInput.value = "";
             }
         });
     }

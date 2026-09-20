@@ -1,6 +1,11 @@
 // робота з LocalStorage
 
 export class Storage {
+
+    constructor(){
+        
+    }
+
     public set(key: string, data: any): void {
         try {
             const serializedData = JSON.stringify(data);
