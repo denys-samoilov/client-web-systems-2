@@ -4,6 +4,7 @@ import { BookForm } from './components/BookForm.ts';
 import { BookList } from './components/BookList.ts';
 import { UserList } from './components/UserList.ts'; 
 import type { Book } from '../models/Book.ts';
+import type { User } from '../models/User.ts';
 
 export class PageRenderer{
 
@@ -13,11 +14,11 @@ export class PageRenderer{
     private bookListContainer = new BookList();
     private userListContainer = new UserList();
 
-    public renderPage(books: Book[]): string{
+    public renderPage(books: Book[], users: User[]): string{
         return this.headerContainer.render() + 
                this.userFormContainer.render() + 
                this.bookFormContainer.render() + 
                this.bookListContainer.render(books) + 
-               this.userListContainer.render();
+               this.userListContainer.render(users);
     }
 }

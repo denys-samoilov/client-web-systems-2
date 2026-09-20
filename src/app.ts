@@ -7,13 +7,17 @@ import { BookForm } from './ui/components/BookForm.ts';
 import { UserForm } from './ui/components/UserForm.ts';
 import { Library } from './services/Library.ts';
 import { Book } from './models/Book.ts';
+import { User } from './models/User.ts';
+import { IdGenerator } from './utils/idGenerator.ts'
 
 class App {
     private renderer = new PageRenderer();
     private bookForm = new BookForm();
     private userForm = new UserForm();
+    private idGenerator = new IdGenerator();
 
     private bookLibrary = new Library<Book>('library_books');
+    private userLibrary = new Library<User>('library_users');
 
     constructor() {
         this.updateUI();
@@ -24,7 +28,7 @@ class App {
         const rootContainer = document.getElementById('app');
 
         if (rootContainer) {
-            rootContainer.innerHTML = this.renderer.renderPage(this.bookLibrary.getAll());
+            rootContainer.innerHTML = this.renderer.renderPage(this.bookLibrary.getAll(), this.userLibrary.getAll());
             
             this.bookForm.validateForm((name, author, year) => {
                 const newBook = new Book(name, author, year);
@@ -35,6 +39,16 @@ class App {
                 
                 this.updateUI(); 
             });
+
+            this.userForm.validateForm((name, email) => {
+                const newUser = new User(this.idGenerator.generateId(), name, email);
+
+                this.userLibrary.add(newUser);
+
+                console.log(`Успішно створено об'єкт користувача:`, newUser);
+                
+                this.updateUI(); 
+            })
 
         }
     }

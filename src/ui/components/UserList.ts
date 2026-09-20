@@ -1,5 +1,18 @@
+import type { User } from "../../models/User";
+
 export class UserList{
-    public render(): string{
+    public render(users: User[] = []): string{
+        let userHtml: string = '';
+
+        for(let user of users){
+            userHtml += `
+                <div class="list-group-user d-flex justify-content-between align-items-center py-3 bg-transparent px-0 border-bottom">
+                    <div class="text-dark">
+                        ${user.getId()} ${user.getName()} (${user.getEmail()})
+                    </div>
+                </div>   `;
+        }
+
         return `
         <div class="container mt-4">
             <div class="row justify-content-center">
@@ -11,13 +24,7 @@ export class UserList{
                             <h2 class="card-title fw-bold text-dark mb-4">Список Користувачів</h2>
                             
                             <div class="list-group list-group-flush"> 
-                                
-                                <div class="list-group-user d-flex justify-content-between align-items-center py-3 bg-transparent px-0 border-bottom">
-                                    <div class="text-dark">
-                                        12345678 William (willredd@gmail.com)
-                                    </div>
-                                </div>   
-                                
+                                ${userHtml}
                             </div>                                                        
                         </div>
                     </div>

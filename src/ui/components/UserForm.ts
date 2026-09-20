@@ -42,8 +42,8 @@ export class UserForm {
         `;
     }
 
-    public validateForm(): void {
-        const form = document.getElementById('add-user-form');
+    public validateForm(onSuccess: (name: string, email: string) => void): void {
+        const form = document.getElementById('add-user-form') as HTMLFormElement | null;
         const nameInput = document.getElementById('user-name') as HTMLInputElement | null;
         const emailInput = document.getElementById('user-email') as HTMLInputElement | null;
 
@@ -59,7 +59,13 @@ export class UserForm {
             emailInput.classList.toggle('is-invalid', !isEmailValid);
 
             if (isNameValid && isEmailValid) {
-                form.classList.add('was-validated');
+                onSuccess(nameInput.value, emailInput.value);
+
+                nameInput.classList.remove('is-invalid');
+                emailInput.classList.remove('is-invalid');
+
+                nameInput.value = "";
+                emailInput.value = "";
             }
         });
     }

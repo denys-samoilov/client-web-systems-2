@@ -1,6 +1,7 @@
 // generic-клас Library<T>
 import { Storage } from "./Storage.ts";
 import { Book } from "../models/Book.ts";
+import { User } from "../models/User.ts";
 
 interface Item{
     getName(): string;
@@ -42,6 +43,10 @@ export class Library<T extends Item> {
             if(this.storageKey == "library_books"){
                 const restoredBook = new Book(data.name, data.author, data.year, data.status);
                 this.collection.push(restoredBook as unknown as T);
+            }
+            else if(this.storageKey == "library_users"){
+                const restoredUser = new User(data.id, data.name, data.email, data.borrowedBooks);
+                this.collection.push(restoredUser as unknown as T);
             }
         }
     }
