@@ -29,9 +29,13 @@ class App {
 
         if (rootContainer) {
             rootContainer.innerHTML = this.renderer.renderPage(this.bookLibrary.getAll(), this.userLibrary.getAll());
-            
-            this.bookForm.validateForm((name, author, year) => {
-                const newBook = new Book(name, author, year);
+            this.validateForms();
+        }
+    }
+
+    validateForms(): void{
+        this.bookForm.validateForm((name, author, year) => {
+                const newBook = new Book(this.idGenerator.generateBookId(), name, author, year);
                 
                 this.bookLibrary.add(newBook);
                 
@@ -41,7 +45,7 @@ class App {
             });
 
             this.userForm.validateForm((name, email) => {
-                const newUser = new User(this.idGenerator.generateId(), name, email);
+                const newUser = new User(this.idGenerator.generateUserId(), name, email);
 
                 this.userLibrary.add(newUser);
 
@@ -49,10 +53,10 @@ class App {
                 
                 this.updateUI(); 
             })
-
-        }
     }
 }
+
+ 
 
 document.addEventListener('DOMContentLoaded', () => {
     new App();
