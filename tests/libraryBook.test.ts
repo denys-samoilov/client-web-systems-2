@@ -44,8 +44,9 @@ describe('Library<Book> Testing', () => {
 
     it('returns book when called getByName method', () => {
         const result = bookLib.getByName("LOTR");
+        const expectedArr: Book[] = [book1];
 
-        expect(result).to.deep.equal(book1); 
+        expect(result).to.deep.equal(expectedArr); 
     });
 
     it('deletes book when called remove method', () => {

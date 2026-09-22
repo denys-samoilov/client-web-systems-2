@@ -36,8 +36,10 @@ export class Library<T extends Item> {
     return this.collection.find((item) => item.getId() === id);
   }
 
-  public getByName(name: string): T | undefined {
-    return this.collection.find((item) => item.getName() === name);
+  public getByName(name: string): T[] | undefined {
+    return this.collection.filter((item) =>
+      item.getName().toLowerCase().includes(name.toLowerCase())
+    );
   }
 
   private loadLocalData(): void {

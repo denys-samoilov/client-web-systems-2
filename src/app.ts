@@ -1,4 +1,3 @@
-// точка входу, збирає все разом
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap/dist/js/bootstrap.bundle.min.js';
 import { Modal as BModal } from 'bootstrap';
@@ -28,6 +27,8 @@ class App {
     this.bookHandler();
 
     this.updateUI();
+
+    this.setupSearchListener();
   }
 
   private updateUI(): void {
@@ -166,6 +167,49 @@ class App {
         }
       }
     });
+  }
+
+  private setupSearchListener(): void {
+    document.body.addEventListener('input', (e: Event) => {
+      const target = e.target as HTMLInputElement;
+
+      if (target.id === 'book-search-input') {
+        const query = target.value.trim().toLowerCase();
+        const allBooks = this.bookLibrary.getAll();
+        const listContainer = document.getElementById('dynamic-book-list-container');
+
+        if (!listContainer) return;
+
+        if (!query) {
+          this.refreshBookListDOM(allBooks, listContainer);
+          return;
+        }
+
+        const filteredBooks = this.bookLibrary.getByName(query);
+
+        if (!filteredBooks) return;
+
+        this.refreshBookListDOM(filteredBooks, listContainer);
+      }
+    });
+  }
+
+  private refreshBookListDOM(books: Book[], container: HTMLElement): void {
+    let html = '';
+    for (const book of books) {
+      const isBorrowed = book.getStatus() === 'borrowed';
+      html += `
+                <div class="list-group-item d-flex justify-content-between align-items-center py-3 bg-transparent px-0 border-bottom">
+                    <div class="text-dark">
+                        <strong>${book.getName()}</strong> by ${book.getAuthor()} (${book.getYear()})
+                    </div>
+                    <button class="btn ${isBorrowed ? 'btn-warning' : 'btn-primary'} px-3 py-1 btn-sm fw-medium book-action-btn" data-id="${book.getId()}">
+                        ${isBorrowed ? 'Повернути' : 'Позичити'}
+                    </button>
+                </div>
+            `;
+    }
+    container.innerHTML = html;
   }
 }
 

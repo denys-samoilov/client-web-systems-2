@@ -44,8 +44,9 @@ describe('Library<Book> Testing', () => {
 
     it('returns user when called getByName method', () => {
         const result = userLib.getByName("Denys");
-
-        expect(result).to.deep.equal(user1); 
+        const expectedArr: User[] = [user1];
+        
+        expect(result).to.deep.equal(expectedArr); 
     });
 
     it('deletes user when called remove method', () => {
