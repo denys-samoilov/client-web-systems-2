@@ -1,12 +1,12 @@
 import { Book } from '../../models/Book.ts';
 
 export class BookList {
-    public render(books: Book[] = []): string {
-        let booksHtml: string = '';
-        for(let book of books) {
-            let isBorrowed = book.getStatus() === 'borrowed';
-            
-            booksHtml += `
+  public render(books: Book[] = []): string {
+    let booksHtml: string = '';
+    for (const book of books) {
+      const isBorrowed = book.getStatus() === 'borrowed';
+
+      booksHtml += `
                 <div class="list-group-item d-flex justify-content-between align-items-center py-3 bg-transparent px-0 border-bottom">
                     <div class="text-dark">
                         <strong>${book.getName()}</strong> by ${book.getAuthor()} (${book.getYear()})
@@ -17,9 +17,9 @@ export class BookList {
                     </button>
                 </div>
             `;
-        };
+    }
 
-        return `
+    return `
             <div class="container mt-4">
                 <div class="row justify-content-center">
                     <div class="col-10">
@@ -35,5 +35,5 @@ export class BookList {
                 </div>
             </div>
         `;
-    }
+  }
 }

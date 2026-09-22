@@ -1,10 +1,10 @@
 import { Validator } from '../../utils/validators.ts';
 
 export class UserForm {
-    private validator = new Validator();
+  private validator = new Validator();
 
-    public render(): string {
-        return `
+  public render(): string {
+    return `
             <div class="container mt-5">
                 <div class="row justify-content-center">
                     <div class="col-10">
@@ -40,33 +40,33 @@ export class UserForm {
                 </div>
             </div>    
         `;
-    }
+  }
 
-    public validateForm(onSuccess: (name: string, email: string) => void): void {
-        const form = document.getElementById('add-user-form') as HTMLFormElement | null;
-        const nameInput = document.getElementById('user-name') as HTMLInputElement | null;
-        const emailInput = document.getElementById('user-email') as HTMLInputElement | null;
+  public validateForm(onSuccess: (name: string, email: string) => void): void {
+    const form = document.getElementById('add-user-form') as HTMLFormElement | null;
+    const nameInput = document.getElementById('user-name') as HTMLInputElement | null;
+    const emailInput = document.getElementById('user-email') as HTMLInputElement | null;
 
-        if (!form || !nameInput || !emailInput) return;
+    if (!form || !nameInput || !emailInput) return;
 
-        form.addEventListener('submit', (event) => {
-            event.preventDefault();
+    form.addEventListener('submit', (event) => {
+      event.preventDefault();
 
-            const isNameValid = this.validator.isValidName(nameInput.value);
-            const isEmailValid = this.validator.isValidEmail(emailInput.value);
+      const isNameValid = this.validator.isValidName(nameInput.value);
+      const isEmailValid = this.validator.isValidEmail(emailInput.value);
 
-            nameInput.classList.toggle('is-invalid', !isNameValid);
-            emailInput.classList.toggle('is-invalid', !isEmailValid);
+      nameInput.classList.toggle('is-invalid', !isNameValid);
+      emailInput.classList.toggle('is-invalid', !isEmailValid);
 
-            if (isNameValid && isEmailValid) {
-                onSuccess(nameInput.value, emailInput.value);
+      if (isNameValid && isEmailValid) {
+        onSuccess(nameInput.value, emailInput.value);
 
-                nameInput.classList.remove('is-invalid');
-                emailInput.classList.remove('is-invalid');
+        nameInput.classList.remove('is-invalid');
+        emailInput.classList.remove('is-invalid');
 
-                nameInput.value = "";
-                emailInput.value = "";
-            }
-        });
-    }
+        nameInput.value = '';
+        emailInput.value = '';
+      }
+    });
+  }
 }

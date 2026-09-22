@@ -1,9 +1,9 @@
-import type { Book } from "../../models/Book";
-import type { User } from "../../models/User";
+import type { Book } from '../../models/Book';
+import type { User } from '../../models/User';
 
-export class Modal{
-    public renderBorrowModal(): string {
-        return `
+export class Modal {
+  public renderBorrowModal(): string {
+    return `
             <div class="modal fade" id="borrowModal" tabindex="-1" aria-hidden="true" data-bs-backdrop="static">
                 <div class="modal-dialog modal-dialog-centered">
                     <div class="modal-content border-0 shadow rounded p-2">
@@ -33,10 +33,10 @@ export class Modal{
                 </div>
             </div>
         `;
-    }
+  }
 
-    public renderSuccessBorrowModal(): string {
-        return `
+  public renderSuccessBorrowModal(): string {
+    return `
             <div class="modal fade" id="successBorrowModal" tabindex="-1" aria-hidden="true">
                 <div class="modal-dialog modal-dialog-centered">
                     <div class="modal-content border-0 shadow rounded p-3">
@@ -52,10 +52,10 @@ export class Modal{
                 </div>
             </div>
         `;
-    }
+  }
 
-    public renderSuccessReturnModal(): string {
-        return `
+  public renderSuccessReturnModal(): string {
+    return `
             <div class="modal fade" id="successReturnModal" tabindex="-1" aria-hidden="true">
                 <div class="modal-dialog modal-dialog-centered">
                     <div class="modal-content border-0 shadow rounded p-3">
@@ -71,7 +71,5 @@ export class Modal{
                 </div>
             </div>
         `;
-    }
-
-
+  }
 }

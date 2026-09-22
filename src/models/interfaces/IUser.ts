@@ -1,5 +1,5 @@
-interface IUser{
-    getId(): number;
-    getName(): string;
-    getEmail(): string;
+interface IUser {
+  getId(): number;
+  getName(): string;
+  getEmail(): string;
 }

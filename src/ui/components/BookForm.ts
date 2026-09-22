@@ -1,10 +1,10 @@
 import { Validator } from '../../utils/validators.ts';
 
 export class BookForm {
-    private validator = new Validator();
+  private validator = new Validator();
 
-    public render(): string {
-        return `
+  public render(): string {
+    return `
             <div class="container mt-5">
                 <div class="row justify-content-center">
                     <div class="col-10">
@@ -44,38 +44,38 @@ export class BookForm {
                 </div>
             </div>
         `;
-    }
+  }
 
-    public validateForm(onSuccess: (name: string, author: string, year: number) => void): void {
-        const form = document.getElementById('add-book-form') as HTMLFormElement;
-        const nameInput = document.getElementById('book-name') as HTMLInputElement | null;
-        const authorInput = document.getElementById('book-author') as HTMLInputElement | null;
-        const yearInput = document.getElementById('book-year') as HTMLInputElement | null;
+  public validateForm(onSuccess: (name: string, author: string, year: number) => void): void {
+    const form = document.getElementById('add-book-form') as HTMLFormElement;
+    const nameInput = document.getElementById('book-name') as HTMLInputElement | null;
+    const authorInput = document.getElementById('book-author') as HTMLInputElement | null;
+    const yearInput = document.getElementById('book-year') as HTMLInputElement | null;
 
-        if (!form || !nameInput || !authorInput || !yearInput) return;
+    if (!form || !nameInput || !authorInput || !yearInput) return;
 
-        form.addEventListener('submit', (event) => {
-            event.preventDefault();
+    form.addEventListener('submit', (event) => {
+      event.preventDefault();
 
-            const isNameValid = this.validator.isValidName(nameInput.value);
-            const isAuthorValid = this.validator.isValidName(authorInput.value);
-            const isYearValid = this.validator.isValidYear(yearInput.value.trim());
+      const isNameValid = this.validator.isValidName(nameInput.value);
+      const isAuthorValid = this.validator.isValidName(authorInput.value);
+      const isYearValid = this.validator.isValidYear(yearInput.value.trim());
 
-            nameInput.classList.toggle('is-invalid', !isNameValid);
-            authorInput.classList.toggle('is-invalid', !isAuthorValid);
-            yearInput.classList.toggle('is-invalid', !isYearValid);
+      nameInput.classList.toggle('is-invalid', !isNameValid);
+      authorInput.classList.toggle('is-invalid', !isAuthorValid);
+      yearInput.classList.toggle('is-invalid', !isYearValid);
 
-            if (isNameValid && isAuthorValid && isYearValid) {
-                onSuccess(nameInput.value, authorInput.value, parseInt(yearInput.value, 10));
+      if (isNameValid && isAuthorValid && isYearValid) {
+        onSuccess(nameInput.value, authorInput.value, parseInt(yearInput.value, 10));
 
-                nameInput.classList.remove('is-invalid');
-                authorInput.classList.remove('is-invalid');
-                yearInput.classList.remove('is-invalid');
+        nameInput.classList.remove('is-invalid');
+        authorInput.classList.remove('is-invalid');
+        yearInput.classList.remove('is-invalid');
 
-                nameInput.value = "";
-                authorInput.value = "";
-                yearInput.value = "";
-            }
-        });
-    }
+        nameInput.value = '';
+        authorInput.value = '';
+        yearInput.value = '';
+      }
+    });
+  }
 }

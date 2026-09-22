@@ -1,19 +1,19 @@
-import type { User } from "../../models/User";
+import type { User } from '../../models/User';
 
-export class UserList{
-    public render(users: User[] = []): string{
-        let userHtml: string = '';
+export class UserList {
+  public render(users: User[] = []): string {
+    let userHtml: string = '';
 
-        for(let user of users){
-            userHtml += `
+    for (const user of users) {
+      userHtml += `
                 <div class="list-group-user d-flex justify-content-between align-items-center py-3 bg-transparent px-0 border-bottom">
                     <div class="text-dark">
                         ${user.getId()} ${user.getName()} (${user.getEmail()})
                     </div>
                 </div>   `;
-        }
+    }
 
-        return `
+    return `
         <div class="container mt-4">
             <div class="row justify-content-center">
                 <div class="col-10">
@@ -33,5 +33,5 @@ export class UserList{
             </div>
         </div>
     `;
-    }
+  }
 }
