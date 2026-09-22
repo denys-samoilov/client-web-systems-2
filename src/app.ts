@@ -24,6 +24,10 @@ class App {
 
   private borrowBootstrapModal: BModal | null = null;
 
+  private bookCurrentPage: number = 1;
+  private readonly bookPageSize: number = 5; 
+  private currentSearchQuery: string = '';
+
   constructor() {
     this.bookHandler();
 
@@ -32,16 +36,39 @@ class App {
     this.setupSearchListener();
 
     this.deleteHandler();
+
+    this.setupPaginationListener();
   }
 
   private updateUI(): void {
     const rootContainer = document.getElementById('app');
 
     if (rootContainer) {
+
+      const filteredBooks = this.currentSearchQuery
+                ? (this.bookLibrary.getByName(this.currentSearchQuery) as unknown as Book[])
+                : this.bookLibrary.getAll();
+
+      const totalBooksCount = filteredBooks.length;
+
+      const startIndex = (this.bookCurrentPage - 1) * this.bookPageSize;
+      const endIndex = startIndex + this.bookPageSize;
+      const paginatedBooks = filteredBooks.slice(startIndex, endIndex);
+
       rootContainer.innerHTML = this.renderer.renderPage(
-        this.bookLibrary.getAll(),
-        this.userLibrary.getAll()
-      );
+                paginatedBooks, 
+                this.userLibrary.getAll(),
+                totalBooksCount,
+                this.bookCurrentPage,
+                this.bookPageSize
+            );    
+
+      const searchInput = document.getElementById('book-search-input') as HTMLInputElement | null;
+            if (searchInput && this.currentSearchQuery) {
+                searchInput.value = this.currentSearchQuery;
+                searchInput.focus();
+                searchInput.setSelectionRange(this.currentSearchQuery.length, this.currentSearchQuery.length);
+            }
 
       const modalElement = document.getElementById('borrowModal');
       if (modalElement) {
@@ -175,23 +202,27 @@ class App {
       const target = e.target as HTMLInputElement;
 
       if (target.id === 'book-search-input') {
-        const query = target.value.trim().toLowerCase();
+        this.currentSearchQuery = target.value.trim().toLowerCase();
         const listContainer = document.getElementById('dynamic-book-list-container');
 
         if (!listContainer) return;
 
-        if (!query) {
+        if (!this.currentSearchQuery) {
           this.updateUI();
           return;
         }
 
-        const filteredBooks = this.bookLibrary.getByName(query);
+        const filteredBooks = this.bookLibrary.getByName(this.currentSearchQuery);
 
         if (!filteredBooks) return;
 
         const bookListForm = new BookList();
 
         listContainer.innerHTML = bookListForm.renderBooks(filteredBooks);
+
+        this.currentSearchQuery = target.value.trim();
+        this.bookCurrentPage = 1;
+        this.updateUI();
       }
     });
   }
@@ -231,6 +262,20 @@ class App {
       }
     });
   }
+
+  private setupPaginationListener(): void {
+        document.body.addEventListener('click', (e: Event) => {
+            const target = e.target as HTMLElement;
+
+            if (target.classList.contains('book-page-btn')) {
+                const targetPageAttr = target.getAttribute('data-page');
+                if (!targetPageAttr) return;
+
+                this.bookCurrentPage = parseInt(targetPageAttr, 10);
+                this.updateUI();
+            }
+        });
+    }
 }
 
 document.addEventListener('DOMContentLoaded', () => {

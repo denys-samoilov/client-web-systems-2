@@ -15,16 +15,14 @@ export class PageRenderer {
   private userListContainer = new UserList();
   private modalContainer = new Modal();
 
-  public renderPage(books: Book[], users: User[]): string {
-    return (
-      this.headerContainer.render() +
-      this.userFormContainer.render() +
-      this.bookFormContainer.render() +
-      this.bookListContainer.render(books) +
-      this.userListContainer.render(users) +
-      this.modalContainer.renderBorrowModal()
-    );
-    this.modalContainer.renderSuccessBorrowModal();
-    this.modalContainer.renderSuccessReturnModal();
-  }
+  public renderPage(books: Book[], users: User[], totalBooksCount: number = 0, currentPage: number = 1, pageSize: number = 5): string {
+    return this.headerContainer.render() + 
+           this.userFormContainer.render() + 
+           this.bookFormContainer.render() + 
+           this.bookListContainer.render(books, totalBooksCount, currentPage, pageSize) + 
+           this.userListContainer.render(users) +
+           this.modalContainer.renderBorrowModal() +
+           this.modalContainer.renderSuccessBorrowModal() +
+           this.modalContainer.renderSuccessReturnModal();
+}
 }
