@@ -7,12 +7,8 @@
     "node": ">=22.6.0"
   },
   "scripts": {
-    "start": "webpack serve",
+    "start": "vite",
     "test": "mocha",
-    "build": "webpack --mode=production --config-node-env=production",
-    "build:dev": "webpack --mode=development",
-    "serve": "webpack serve",
-    "watch": "webpack --watch",
     "check:types": "tsc --noEmit",
     "lint": "eslint \"src/**/*.ts\"",
     "lint:fix": "eslint \"src/**/*.ts\" --fix",
@@ -20,25 +16,22 @@
   },
   "devDependencies": {
     "@eslint/js": "^10.0.1",
+    "@types/bootstrap": "^5.2.11",
     "@types/chai": "^5.2.3",
     "@types/mocha": "^10.0.10",
     "@typescript-eslint/eslint-plugin": "^8.70.1",
     "@typescript-eslint/parser": "^8.70.1",
     "chai": "^6.2.2",
-    "copy-webpack-plugin": "^14.0.0",
     "eslint": "^10.11.0",
     "eslint-config-prettier": "^10.1.8",
     "eslint-plugin-prettier": "^5.5.6",
     "globals": "^17.12.0",
-    "html-webpack-plugin": "^5.6.8",
-    "mini-css-extract-plugin": "^2.10.2",
     "mocha": "^12.0.2",
     "prettier": "^3.9.8",
     "ts-node": "^10.9.2",
     "typescript-eslint": "^8.70.1",
-    "webpack-cli": "^7.2.3",
-    "webpack-dev-server": "^6.0.0",
-    "workbox-webpack-plugin": "^7.4.1"
+    "vite": "^8.3.0",
+    "vite-plugin-checker": "^0.14.5"
   },
   "dependencies": {
     "bootstrap": "^5.3.8"
