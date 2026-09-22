@@ -125,7 +125,7 @@ class App {
             modalInput.value = '';
           }
 
-          this.borrowBootstrapModal.show();
+          this.borrowBootstrapModal?.show();
         } else {
           const user = this.userLibrary.getById(book.getUser());
           const isReturned = bookService.returnBook(bookId);
@@ -192,7 +192,7 @@ class App {
             return;
           }
 
-          this.borrowBootstrapModal.hide();
+          this.borrowBootstrapModal?.hide();
           this.updateUI();
         }
       }

@@ -7,7 +7,7 @@ export default defineConfig({
     port: 9000,
     open: true, 
   },
-  // Налаштування збірки проєкту
+  
   build: {
     outDir: 'dist',
     target: 'esnext', 
