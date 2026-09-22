@@ -25,7 +25,7 @@ class App {
   private borrowBootstrapModal: BModal | null = null;
 
   private bookCurrentPage: number = 1;
-  private readonly bookPageSize: number = 5; 
+  private readonly bookPageSize: number = 5;
   private currentSearchQuery: string = '';
 
   constructor() {
@@ -44,10 +44,9 @@ class App {
     const rootContainer = document.getElementById('app');
 
     if (rootContainer) {
-
       const filteredBooks = this.currentSearchQuery
-                ? (this.bookLibrary.getByName(this.currentSearchQuery) as unknown as Book[])
-                : this.bookLibrary.getAll();
+        ? (this.bookLibrary.getByName(this.currentSearchQuery) as unknown as Book[])
+        : this.bookLibrary.getAll();
 
       const totalBooksCount = filteredBooks.length;
 
@@ -56,19 +55,22 @@ class App {
       const paginatedBooks = filteredBooks.slice(startIndex, endIndex);
 
       rootContainer.innerHTML = this.renderer.renderPage(
-                paginatedBooks, 
-                this.userLibrary.getAll(),
-                totalBooksCount,
-                this.bookCurrentPage,
-                this.bookPageSize
-            );    
+        paginatedBooks,
+        this.userLibrary.getAll(),
+        totalBooksCount,
+        this.bookCurrentPage,
+        this.bookPageSize
+      );
 
       const searchInput = document.getElementById('book-search-input') as HTMLInputElement | null;
-            if (searchInput && this.currentSearchQuery) {
-                searchInput.value = this.currentSearchQuery;
-                searchInput.focus();
-                searchInput.setSelectionRange(this.currentSearchQuery.length, this.currentSearchQuery.length);
-            }
+      if (searchInput && this.currentSearchQuery) {
+        searchInput.value = this.currentSearchQuery;
+        searchInput.focus();
+        searchInput.setSelectionRange(
+          this.currentSearchQuery.length,
+          this.currentSearchQuery.length
+        );
+      }
 
       const modalElement = document.getElementById('borrowModal');
       if (modalElement) {
@@ -264,18 +266,18 @@ class App {
   }
 
   private setupPaginationListener(): void {
-        document.body.addEventListener('click', (e: Event) => {
-            const target = e.target as HTMLElement;
+    document.body.addEventListener('click', (e: Event) => {
+      const target = e.target as HTMLElement;
 
-            if (target.classList.contains('book-page-btn')) {
-                const targetPageAttr = target.getAttribute('data-page');
-                if (!targetPageAttr) return;
+      if (target.classList.contains('book-page-btn')) {
+        const targetPageAttr = target.getAttribute('data-page');
+        if (!targetPageAttr) return;
 
-                this.bookCurrentPage = parseInt(targetPageAttr, 10);
-                this.updateUI();
-            }
-        });
-    }
+        this.bookCurrentPage = parseInt(targetPageAttr, 10);
+        this.updateUI();
+      }
+    });
+  }
 }
 
 document.addEventListener('DOMContentLoaded', () => {

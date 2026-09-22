@@ -1,8 +1,7 @@
 import { Book } from '../../models/Book.ts';
 
 export class BookList {
-
-    public renderBooks(books: Book[] = []): string {
+  public renderBooks(books: Book[] = []): string {
     let html = '';
     for (const book of books) {
       const isBorrowed = book.getStatus() === 'borrowed';
@@ -22,7 +21,7 @@ export class BookList {
     return html;
   }
 
-  public paginator(totalBooksCount: number, currentPage: number, pageSize: number = 5): string{
+  public paginator(totalBooksCount: number, currentPage: number, pageSize: number = 5): string {
     const totalPages = Math.ceil(totalBooksCount / pageSize) || 1;
 
     let paginationItemsHtml = '';
@@ -36,10 +35,13 @@ export class BookList {
     return paginationItemsHtml;
   }
 
-  public render(books: Book[] = [], totalBooksCount: number = 0, currentPage: number = 1, pageSize: number = 5): string {
-
+  public render(
+    books: Book[] = [],
+    totalBooksCount: number = 0,
+    currentPage: number = 1,
+    pageSize: number = 5
+  ): string {
     const totalPages = Math.ceil(totalBooksCount / pageSize) || 1;
-
 
     return `
             <div class="container mt-4">
@@ -78,6 +80,4 @@ export class BookList {
             </div>
         `;
   }
-
-  
 }
