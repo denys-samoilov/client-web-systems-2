@@ -8,7 +8,7 @@ export class BookList {
       html += `
                 <div class="list-group-item d-flex justify-content-between align-items-center py-3 bg-transparent px-0 border-bottom">
                     <div class="text-dark d-flex align-items-center">
-                        <button class="btn btn-outline-danger btn-sm border-0 me-2 px-2 py-0 book-delete-btn" data-id="${book.getId()}" title="Видалити книгу">✕</button>
+                        <button class="btn btn-outline-danger btn-sm border-0 me-2 px-2 py-0 book-delete-btn ${isBorrowed ? 'd-none' : ''}" data-id="${book.getId()}" title="Видалити книгу">✕</button>
                         <strong>${book.getName()}</strong>&nbsp;by ${book.getAuthor()} (${book.getYear()})
                     </div>
                     

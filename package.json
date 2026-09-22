@@ -8,15 +8,17 @@
   },
   "scripts": {
     "start": "webpack serve",
+    "build": "tsc && webpack --mode production",
     "test": "mocha",
-    "build": "webpack --mode=production --config-node-env=production",
     "build:dev": "webpack --mode=development",
     "serve": "webpack serve",
     "watch": "webpack --watch",
     "check:types": "tsc --noEmit",
     "lint": "eslint \"src/**/*.ts\"",
     "lint:fix": "eslint \"src/**/*.ts\" --fix",
-    "prepare": "husky"
+    "prepare": "husky",
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d dist"
   },
   "devDependencies": {
     "@eslint/js": "^10.0.1",

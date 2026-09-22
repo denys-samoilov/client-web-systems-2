@@ -13,8 +13,7 @@ const isProduction = process.env.NODE_ENV === "production";
 
 /** @type {import("webpack").Configuration} */
 const config  = {
-    // The page itself is the entry: webpack bundles the scripts and stylesheets
-    // it references and emits it as `dist/index.html`.
+    
     entry: { index: "./src/app.ts" },
     output: {
         filename: "output.js",
@@ -35,10 +34,6 @@ const config  = {
                 test: /\.(eot|svg|ttf|woff|woff2|png|jpg|gif)$/i,
                 type: "asset",
             },
-
-            // HTML, CSS and TypeScript need no loader — webpack supports them out of the box
-            // Add your rules for custom modules here
-            // Learn more about loaders from https://webpack.js.org/loaders/
         ],
     },
     resolve: {
