@@ -31,7 +31,7 @@ class App {
 
     this.setupSearchListener();
 
-    this.deleteHandler()
+    this.deleteHandler();
   }
 
   private updateUI(): void {
@@ -192,47 +192,45 @@ class App {
         const bookListForm = new BookList();
 
         listContainer.innerHTML = bookListForm.renderBooks(filteredBooks);
-
       }
     });
   }
 
   private deleteHandler(): void {
-        document.body.addEventListener('click', (e: Event) => {
-            const target = e.target as HTMLElement;
+    document.body.addEventListener('click', (e: Event) => {
+      const target = e.target as HTMLElement;
 
-            if (target.classList.contains('book-delete-btn')) {
-                const idString = target.getAttribute('data-id');
-                if (!idString) return;
+      if (target.classList.contains('book-delete-btn')) {
+        const idString = target.getAttribute('data-id');
+        if (!idString) return;
 
-                const bookId = parseInt(idString, 10);
+        const bookId = parseInt(idString, 10);
 
-                const book = this.bookLibrary.getById(bookId);
+        const book = this.bookLibrary.getById(bookId);
 
-                if(book?.getUser() === -1){
-                  this.bookLibrary.remove(bookId);
-                  this.updateUI();
-                }
-                
-            }
+        if (book?.getUser() === -1) {
+          this.bookLibrary.remove(bookId);
+          this.updateUI();
+        }
+      }
 
-            if (target.classList.contains('user-delete-btn')) {
-                const idString = target.getAttribute('data-id');
-                if (!idString) return;
+      if (target.classList.contains('user-delete-btn')) {
+        const idString = target.getAttribute('data-id');
+        if (!idString) return;
 
-                const userId = parseInt(idString, 10);
+        const userId = parseInt(idString, 10);
 
-                const user = this.userLibrary.getById(userId);
+        const user = this.userLibrary.getById(userId);
 
-                if(user){
-                  if(user.getBorrowedBooks().length === 0){
-                  this.userLibrary.remove(userId);
-                  this.updateUI();
-                }
-                }        
-            }
-        });
-    }
+        if (user) {
+          if (user.getBorrowedBooks().length === 0) {
+            this.userLibrary.remove(userId);
+            this.updateUI();
+          }
+        }
+      }
+    });
+  }
 }
 
 document.addEventListener('DOMContentLoaded', () => {
