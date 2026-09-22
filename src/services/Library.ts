@@ -40,7 +40,6 @@ export class Library<T extends Item> {
     return this.collection.find((item) => item.getName() === name);
   }
 
-
   private loadLocalData(): void {
     const rawData = this.storage.get<any[]>(this.storageKey);
     if (!rawData) return;
