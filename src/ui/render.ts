@@ -3,7 +3,7 @@ import { UserForm } from './components/UserForm.ts';
 import { BookForm } from './components/BookForm.ts';
 import { BookList } from './components/BookList.ts';
 import { UserList } from './components/UserList.ts'; 
-import { Book } from "../models/Book.js";
+import { Book } from "../models/Book.ts";
 import type { User } from '../models/User.ts';
 import { Modal } from './components/Modal.ts';
 
@@ -23,5 +23,7 @@ export class PageRenderer{
                this.bookListContainer.render(books) + 
                this.userListContainer.render(users) +
                this.modalContainer.renderBorrowModal();
+               this.modalContainer.renderSuccessBorrowModal();
+               this.modalContainer.renderSuccessReturnModal();
     }
 }

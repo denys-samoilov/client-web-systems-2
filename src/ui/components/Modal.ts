@@ -34,4 +34,44 @@ export class Modal{
             </div>
         `;
     }
+
+    public renderSuccessBorrowModal(): string {
+        return `
+            <div class="modal fade" id="successBorrowModal" tabindex="-1" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered">
+                    <div class="modal-content border-0 shadow rounded p-3">
+                        <div class="modal-body py-4 fs-5 text-dark" id="success-borrow-text">
+                        
+                        </div>
+                        <div class="modal-footer border-top-0 pt-0 d-flex justify-content-end">
+                            <button type="button" class="btn btn-primary px-4 py-2 border-0 shadow-none fw-medium" style="background-color: #0d6efd;" data-bs-dismiss="modal">
+                                Зрозуміло!
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        `;
+    }
+
+    public renderSuccessReturnModal(): string {
+        return `
+            <div class="modal fade" id="successReturnModal" tabindex="-1" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered">
+                    <div class="modal-content border-0 shadow rounded p-3">
+                        <div class="modal-body py-4 fs-5 text-dark" id="success-return-text">
+
+                        </div>
+                        <div class="modal-footer border-top-0 pt-0 d-flex justify-content-end">
+                            <button type="button" class="btn btn-primary px-4 py-2 border-0 shadow-none fw-medium" style="background-color: #0d6efd;" data-bs-dismiss="modal">
+                                Закрити
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        `;
+    }
+
+
 }

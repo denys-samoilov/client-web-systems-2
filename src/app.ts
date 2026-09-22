@@ -128,7 +128,7 @@ class App {
 
                     if (!userExists) {
                         const feedback = document.getElementById('modal-id-feedback');
-                        if (feedback) feedback.textContent = "Користувача з таким ID не знайдено в базі!";
+                        if (feedback) feedback.textContent = "Користувача з таким ID не знайдено";
                         modalInput.classList.add('is-invalid');
                         return;
                     }
@@ -155,7 +155,7 @@ class App {
                         }
                     } else {
                         const feedback = document.getElementById('modal-id-feedback');
-                        if (feedback) feedback.textContent = "Користувач вже має 3 книги у себе!";
+                        if (feedback) feedback.textContent = "Користувач вже має 3 книги";
                         modalInput.classList.add('is-invalid');
                         return;
                     }
