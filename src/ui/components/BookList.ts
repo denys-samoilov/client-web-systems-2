@@ -2,23 +2,7 @@ import { Book } from '../../models/Book.ts';
 
 export class BookList {
   public render(books: Book[] = []): string {
-    let booksHtml: string = '';
-
-    for (const book of books) {
-      const isBorrowed = book.getStatus() === 'borrowed';
-
-      booksHtml += `
-                <div class="list-group-item d-flex justify-content-between align-items-center py-3 bg-transparent px-0 border-bottom">
-                    <div class="text-dark">
-                        <strong>${book.getName()}</strong> by ${book.getAuthor()} (${book.getYear()})
-                    </div>
-                    
-                    <button class="btn ${isBorrowed ? 'btn-warning' : 'btn-primary'} px-3 py-1 btn-sm fw-medium book-action-btn" data-id="${book.getId()}">
-                        ${isBorrowed ? 'Повернути' : 'Позичити'}
-                    </button>
-                </div>
-            `;
-    }
+    
 
     return `
             <div class="container mt-4">
@@ -35,7 +19,7 @@ export class BookList {
                                 </div>
                                 
                                 <div class="list-group list-group-flush" id="dynamic-book-list-container">
-                                    ${booksHtml || '<div class="text-muted text-center py-3">Нічого не знайдено</div>'}
+                                    ${this.renderBooks(books) || '<div class="text-muted text-center py-3"></div>'}
                                 </div>                                                        
                             </div>
                         </div>
@@ -44,4 +28,27 @@ export class BookList {
             </div>
         `;
   }
+
+  public renderBooks(books: Book[]): string{
+    let booksHtml: string = '';
+
+    for (const book of books) {
+      const isBorrowed = book.getStatus() === 'borrowed';
+
+      booksHtml += `
+                <div class="list-group-item d-flex justify-content-between align-items-center py-3 bg-transparent px-0 border-bottom">
+                    <div class="text-dark d-flex align-items-center">
+                        <button class="btn btn-outline-danger btn-sm  border-0 me-2 px-2 py-0 book-delete-btn ${isBorrowed ? 'd-none': ''}" data-id="${book.getId()}" title="Видалити книгу">✕</button>
+                        <strong>${book.getName()}</strong>&nbsp;by ${book.getAuthor()} (${book.getYear()})
+                    </div>
+                    
+                    <button class="btn ${isBorrowed ? 'btn-warning' : 'btn-primary'} px-3 py-1 btn-sm fw-medium book-action-btn" data-id="${book.getId()}">
+                        ${isBorrowed ? 'Повернути' : 'Позичити'}
+                    </button>
+                </div>
+            `;
+    }
+    return booksHtml;
+  }
+  
 }

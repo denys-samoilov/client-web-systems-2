@@ -11,6 +11,7 @@ import { User } from './models/User.ts';
 import { IdGenerator } from './utils/idGenerator.ts';
 import { BookService } from './services/BookService.ts';
 import { Validator } from './utils/validators.ts';
+import { BookList } from './ui/components/BookList.ts';
 
 class App {
   private renderer = new PageRenderer();
@@ -29,6 +30,8 @@ class App {
     this.updateUI();
 
     this.setupSearchListener();
+
+    this.deleteHandler()
   }
 
   private updateUI(): void {
@@ -54,7 +57,6 @@ class App {
       const newBook = new Book(this.idGenerator.generateBookId(), name, author, year);
 
       this.bookLibrary.add(newBook);
-      console.log(`Успішно створено об'єкт книги:`, newBook);
 
       this.updateUI();
     });
@@ -63,7 +65,6 @@ class App {
       const newUser = new User(this.idGenerator.generateUserId(), name, email);
 
       this.userLibrary.add(newUser);
-      console.log(`Успішно створено об'єкт користувача:`, newUser);
 
       this.updateUI();
     });
@@ -175,13 +176,12 @@ class App {
 
       if (target.id === 'book-search-input') {
         const query = target.value.trim().toLowerCase();
-        const allBooks = this.bookLibrary.getAll();
         const listContainer = document.getElementById('dynamic-book-list-container');
 
         if (!listContainer) return;
 
         if (!query) {
-          this.refreshBookListDOM(allBooks, listContainer);
+          this.updateUI();
           return;
         }
 
@@ -189,28 +189,50 @@ class App {
 
         if (!filteredBooks) return;
 
-        this.refreshBookListDOM(filteredBooks, listContainer);
+        const bookListForm = new BookList();
+
+        listContainer.innerHTML = bookListForm.renderBooks(filteredBooks);
+
       }
     });
   }
 
-  private refreshBookListDOM(books: Book[], container: HTMLElement): void {
-    let html = '';
-    for (const book of books) {
-      const isBorrowed = book.getStatus() === 'borrowed';
-      html += `
-                <div class="list-group-item d-flex justify-content-between align-items-center py-3 bg-transparent px-0 border-bottom">
-                    <div class="text-dark">
-                        <strong>${book.getName()}</strong> by ${book.getAuthor()} (${book.getYear()})
-                    </div>
-                    <button class="btn ${isBorrowed ? 'btn-warning' : 'btn-primary'} px-3 py-1 btn-sm fw-medium book-action-btn" data-id="${book.getId()}">
-                        ${isBorrowed ? 'Повернути' : 'Позичити'}
-                    </button>
-                </div>
-            `;
+  private deleteHandler(): void {
+        document.body.addEventListener('click', (e: Event) => {
+            const target = e.target as HTMLElement;
+
+            if (target.classList.contains('book-delete-btn')) {
+                const idString = target.getAttribute('data-id');
+                if (!idString) return;
+
+                const bookId = parseInt(idString, 10);
+
+                const book = this.bookLibrary.getById(bookId);
+
+                if(book?.getUser() === -1){
+                  this.bookLibrary.remove(bookId);
+                  this.updateUI();
+                }
+                
+            }
+
+            if (target.classList.contains('user-delete-btn')) {
+                const idString = target.getAttribute('data-id');
+                if (!idString) return;
+
+                const userId = parseInt(idString, 10);
+
+                const user = this.userLibrary.getById(userId);
+
+                if(user){
+                  if(user.getBorrowedBooks().length === 0){
+                  this.userLibrary.remove(userId);
+                  this.updateUI();
+                }
+                }        
+            }
+        });
     }
-    container.innerHTML = html;
-  }
 }
 
 document.addEventListener('DOMContentLoaded', () => {

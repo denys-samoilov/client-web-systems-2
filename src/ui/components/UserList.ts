@@ -7,8 +7,9 @@ export class UserList {
     for (const user of users) {
       userHtml += `
                 <div class="list-group-user d-flex justify-content-between align-items-center py-3 bg-transparent px-0 border-bottom">
-                    <div class="text-dark">
-                        ${user.getId()} ${user.getName()} (${user.getEmail()})
+                    <div class="text-dark d-flex align-items-center">
+                        <button class="btn btn-outline-danger btn-sm border-0 me-2 px-2 py-0 user-delete-btn" data-id="${user.getId()}" title="Видалити користувача">✕</button>
+                        <strong>ID: ${user.getId()}</strong>&nbsp;— ${user.getName()} (<span class="text-secondary">${user.getEmail()}</span>)
                     </div>
                 </div>   `;
     }
