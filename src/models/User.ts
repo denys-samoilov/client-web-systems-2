@@ -1,4 +1,5 @@
 import { Book } from './Book.ts';
+import type { IUser } from './interfaces/IUser.ts';
 
 export class User implements IUser {
   private id: number;

@@ -5,6 +5,7 @@ import { User } from '../models/User.ts';
 
 interface Item {
   getId(): number;
+  getName(): string;
 }
 
 export class Library<T extends Item> {
@@ -34,6 +35,11 @@ export class Library<T extends Item> {
   public getById(id: number): T | undefined {
     return this.collection.find((item) => item.getId() === id);
   }
+
+  public getByName(name: string): T | undefined {
+    return this.collection.find((item) => item.getName() === name);
+  }
+
 
   private loadLocalData(): void {
     const rawData = this.storage.get<any[]>(this.storageKey);

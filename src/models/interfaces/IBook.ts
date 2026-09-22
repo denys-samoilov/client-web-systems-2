@@ -1,4 +1,4 @@
-interface IBook {
+export interface IBook {
   getName(): string;
   getAuthor(): string;
   getYear(): number;

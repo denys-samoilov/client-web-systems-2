@@ -1,4 +1,4 @@
-import type { User } from './User';
+import type { IBook } from "./interfaces/IBook";
 
 export class Book implements IBook {
   private id: number;
